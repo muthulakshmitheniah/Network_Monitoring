@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-6">
+
+        <!-- Title -->
+        <h1 class="text-3xl font-bold mb-6 text-center">Device Detail</h1>
+
+        <!-- Device Information Card -->
+        <div class="bg-gray-800 shadow-lg rounded-lg p-6 mb-6">
+            <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2">Device Info</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <p><strong>Name:</strong> {{ device.name }}</p>
+                <p><strong>IP Address:</strong> {{ device.ip_address }}</p>
+                <p><strong>MAC Address:</strong> {{ device.mac_address }}</p>
+                <p><strong>Status:</strong> 
+                    <span class="px-2 py-1 rounded text-sm font-semibold 
+                        {% if device.status == 'Online' %}bg-green-600
+                        {% elif device.status == 'Offline' %}bg-red-600
+                        {% else %}bg-yellow-600{% endif %}">
+                        {{ device.status }}
+                    </span>
+                </p>
+                <p><strong>Uptime:</strong> {{ device.uptime }}</p>
+                <p><strong>Last Checked:</strong> {{ device.last_checked }}</p>
+            </div>
+        </div>
+
+        <!-- Alerts Section -->
+        <div class="bg-gray-800 shadow-lg rounded-lg p-6 mb-6">
+            <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2">Alerts</h2>
+            {% if alerts %}
+                <ul class="space-y-3">
+                    {% for alert in alerts %}
+                        <li class="p-4 rounded bg-gray-700 flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold">{{ alert.alert_type }}</p>
+                                <p class="text-sm text-gray-300">{{ alert.description }}</p>
+                            </div>
+                            <span class="px-3 py-1 text-sm rounded font-semibold 
+                                {% if alert.severity == 'Critical' %}bg-red-500
+                                {% elif alert.severity == 'Warning' %}bg-yellow-500
+                                {% else %}bg-green-500{% endif %}">
+                                {{ alert.severity }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-gray-400">No alerts for this device.</p>
+            {% endif %}
+        </div>
+
+        <!-- Event Logs Section -->
+        <div class="bg-gray-800 shadow-lg rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2">Event Logs</h2>
+            {% if events %}
+                <ul class="space-y-3">
+                    {% for event in events %}
+                        <li class="p-4 rounded bg-gray-700">
+                            <p class="font-semibold">{{ event.event_type }}</p>
+                            <p class="text-sm text-gray-300">{{ event.details }}</p>
+                            <p class="text-xs text-gray-400 mt-1">{{ event.timestamp }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-gray-400">No event logs for this device.</p>
+            {% endif %}
+        </div>
+
+    </div>
+</body>
+</html>
